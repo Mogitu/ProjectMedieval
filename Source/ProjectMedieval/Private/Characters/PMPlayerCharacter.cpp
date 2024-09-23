@@ -9,8 +9,6 @@
 
 APMPlayerCharacter::APMPlayerCharacter()
 {
-	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-	CameraComponent->SetupAttachment(GetRootComponent());
 }
 
 void APMPlayerCharacter::PossessedBy(AController* NewController)
@@ -40,31 +38,19 @@ void APMPlayerCharacter::BeginPlay()
 
 void APMPlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)
 {
-	const FVector2d MovementVector = InputActionValue.Get<FVector2d>();
-	const FRotator MovementRotation(0.f, Controller->GetControlRotation().Yaw, 0.f);
-	if (MovementVector.Y != 0.f)
-	{
-		const FVector ForwardDirection = MovementRotation.RotateVector(FVector::ForwardVector);
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-	}
+	const FVector2d InputVector = InputActionValue.Get<FVector2d>();
+	const FRotator Rotation = GetControlRotation();
 
-	if (MovementVector.X != 0.f)
-	{
-		const FVector RightDirection = MovementRotation.RotateVector(FVector::RightVector);
-		AddMovementInput(RightDirection, MovementVector.X);
-	}
+	FRotator YawRotation(0, Rotation.Yaw, 0);
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(Rotation).GetUnitAxis(EAxis::Y);
+	AddMovementInput(ForwardDirection, InputVector.Y);
+	AddMovementInput(RightDirection, InputVector.X);
 }
 
 void APMPlayerCharacter::Input_Look(const FInputActionValue& InputActionValue)
 {
 	const FVector2d LookAxisVector = InputActionValue.Get<FVector2d>();
-	if (LookAxisVector.X != 0.f)
-	{
-		AddControllerYawInput(LookAxisVector.X);
-	}
-
-	if (LookAxisVector.Y != 0.f)
-	{
-		AddControllerPitchInput(LookAxisVector.Y);
-	}
+	AddControllerYawInput(LookAxisVector.X);
+	AddControllerPitchInput(LookAxisVector.Y);
 }
