@@ -13,5 +13,4 @@ UCLASS()
 class PROJECTMEDIEVAL_API APMPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
 };

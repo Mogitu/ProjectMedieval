@@ -13,5 +13,4 @@ UCLASS()
 class PROJECTMEDIEVAL_API APMGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };
