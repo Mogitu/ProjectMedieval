@@ -2,6 +2,8 @@
 
 
 #include "Characters/PMCharacterBase.h"
+#include "AbilitySystem/PMAbilitySystemComponent.h"
+#include "AbilitySystem/PMAttributeSet.h"
 
 // Sets default values
 APMCharacterBase::APMCharacterBase()
@@ -9,9 +11,16 @@ APMCharacterBase::APMCharacterBase()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
+
+	AbilitySystemComponent = CreateDefaultSubobject<UPMAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemAttributes = CreateDefaultSubobject<UPMAttributeSet>(TEXT("AbilitySystemAttributes"));
 }
 
 void APMCharacterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
 }

@@ -2,9 +2,10 @@
 
 #include "Characters/PMPlayerCharacter.h"
 #include "EnhancedInputSubsystems.h"
-#include "Camera/CameraComponent.h"
 #include "Components/Input/PMInputComponent.h"
 #include "PMGameplayTags.h"
+#include "AbilitySystem/PMAbilitySystemComponent.h"
+#include "DataAssets/Database/PMCharacterDataBase.h"
 #include "DataAssets/Input/PMDataAsset_InputConfig.h"
 
 APMPlayerCharacter::APMPlayerCharacter()
@@ -14,6 +15,13 @@ APMPlayerCharacter::APMPlayerCharacter()
 void APMPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+	if (!CharacterStartupData.IsNull())
+	{
+		if (auto LoadedData = CharacterStartupData.LoadSynchronous())
+		{
+			LoadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
+		}
+	}
 }
 
 void APMPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -29,6 +37,7 @@ void APMPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	UPMInputComponent* PMInputComponent = CastChecked<UPMInputComponent>(PlayerInputComponent);
 	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	PMInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
 void APMPlayerCharacter::BeginPlay()
@@ -53,4 +62,14 @@ void APMPlayerCharacter::Input_Look(const FInputActionValue& InputActionValue)
 	const FVector2d LookAxisVector = InputActionValue.Get<FVector2d>();
 	AddControllerYawInput(LookAxisVector.X);
 	AddControllerPitchInput(LookAxisVector.Y);
+}
+
+void APMPlayerCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
+{
+	AbilitySystemComponent->OnAbilityInputPressed(InInputTag);
+}
+
+void APMPlayerCharacter::Input_AbilityInputReleased(FGameplayTag InInputTag)
+{
+	AbilitySystemComponent->OnAbilityInputReleased(InInputTag);
 }
