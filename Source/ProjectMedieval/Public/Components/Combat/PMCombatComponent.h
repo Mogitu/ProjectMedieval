@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/Abilities/PMGameplayAbility.h"
 #include "Components/ActorComponent.h"
 #include "PMCombatComponent.generated.h"
 
@@ -30,6 +31,11 @@ public:
 	void InitiateSecondaryAttack();
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+	UPMGameplayAbility* PrimaryAbility;
+
+	UPROPERTY(EditDefaultsOnly)
+	UPMGameplayAbility* SecondaryAbility;
 
 	//Make 2 ability vars here for primary and secondary attacks with uproperty editdefaults.
 	
