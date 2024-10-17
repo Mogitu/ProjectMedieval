@@ -19,6 +19,7 @@ void UPMCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AbilitySystemComponent = GetOwner()->FindComponentByClass<UPMAbilitySystemComponent>();
 	// ...
 	
 }
@@ -34,11 +35,15 @@ void UPMCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UPMCombatComponent::InitiatePrimaryAttack()
 {
+	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(PrimaryAbility);
+	AbilitySystemComponent->GiveAbilityAndActivateOnce(AbilitySpec);
 	//TODO: This is going to call the primary attack based on which ability is the primary attack.
 }
 
 void UPMCombatComponent::InitiateSecondaryAttack()
 {
+	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(PrimaryAbility);
+	AbilitySystemComponent->GiveAbilityAndActivateOnce(AbilitySpec);
 	//TODO: Same as first but with secondary.
 }
 

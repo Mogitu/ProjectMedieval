@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/PMGameplayAbility.h"
+#include "AbilitySystem/PMAbilitySystemComponent.h"
 #include "Components/ActorComponent.h"
 #include "PMCombatComponent.generated.h"
 
@@ -37,6 +38,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UPMGameplayAbility> SecondaryAbility;
 
+	TObjectPtr<UPMAbilitySystemComponent> AbilitySystemComponent;
 	//Make 2 ability vars here for primary and secondary attacks with uproperty editdefaults.
 	
 
