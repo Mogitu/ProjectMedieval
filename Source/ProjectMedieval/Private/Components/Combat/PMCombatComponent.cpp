@@ -42,7 +42,7 @@ void UPMCombatComponent::InitiatePrimaryAttack()
 
 void UPMCombatComponent::InitiateSecondaryAttack()
 {
-	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(PrimaryAbility);
+	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SecondaryAbility);
 	AbilitySystemComponent->GiveAbilityAndActivateOnce(AbilitySpec);
 	//TODO: Same as first but with secondary.
 }
