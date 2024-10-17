@@ -32,10 +32,10 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	UPMGameplayAbility* PrimaryAbility;
+	TObjectPtr<UPMGameplayAbility> PrimaryAbility;
 
 	UPROPERTY(EditDefaultsOnly)
-	UPMGameplayAbility* SecondaryAbility;
+	TObjectPtr<UPMGameplayAbility> SecondaryAbility;
 
 	//Make 2 ability vars here for primary and secondary attacks with uproperty editdefaults.
 	
