@@ -4,6 +4,7 @@
 #include "AbilitySystem/Abilities/PMGameplayAbility.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/PMAbilitySystemComponent.h"
+#include "Components/Combat/PMCombatComponent.h"
 
 void UPMGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -28,6 +29,11 @@ void UPMGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, con
 			ActorInfo->AbilitySystemComponent->ClearAbility(Handle);
 		}
 	}
+}
+
+UPMCombatComponent* UPMGameplayAbility::GetPawnCombatComponentFromActorInfo() const
+{
+	return GetAvatarActorFromActorInfo()->FindComponentByClass<UPMCombatComponent>();
 }
 
 UPMAbilitySystemComponent* UPMGameplayAbility::GetPMAbilitySystemComponentFromActorInfo() const

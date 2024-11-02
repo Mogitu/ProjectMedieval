@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "PMCharacterBase.generated.h"
 
+class UPMCombatComponent;
 class UPMAttributeSet;
 class UPMAbilitySystemComponent;
 
@@ -25,6 +26,9 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem")
 	TObjectPtr<UPMAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat")
+	TObjectPtr<UPMCombatComponent> CombatComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AbilitySystem")
 	TObjectPtr<UPMAttributeSet> AbilitySystemAttributes;

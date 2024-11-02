@@ -4,6 +4,7 @@
 #include "Characters/PMCharacterBase.h"
 #include "AbilitySystem/PMAbilitySystemComponent.h"
 #include "AbilitySystem/PMAttributeSet.h"
+#include "Components/Combat/PMCombatComponent.h"
 
 // Sets default values
 APMCharacterBase::APMCharacterBase()
@@ -14,6 +15,7 @@ APMCharacterBase::APMCharacterBase()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UPMAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemAttributes = CreateDefaultSubobject<UPMAttributeSet>(TEXT("AbilitySystemAttributes"));
+	CombatComponent = CreateDefaultSubobject<UPMCombatComponent>(TEXT("CombatComponent"));
 }
 
 void APMCharacterBase::PossessedBy(AController* NewController)
