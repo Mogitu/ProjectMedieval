@@ -14,6 +14,7 @@ APMPlayerCharacter::APMPlayerCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->bUsePawnControlRotation = true;
 	CameraComponent->SetupAttachment(GetRootComponent());
+	GetMesh()->SetupAttachment(CameraComponent);
 }
 
 void APMPlayerCharacter::PossessedBy(AController* NewController)
@@ -40,7 +41,7 @@ void APMPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 	UPMInputComponent* PMInputComponent = CastChecked<UPMInputComponent>(PlayerInputComponent);
 	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);	
 	PMInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 

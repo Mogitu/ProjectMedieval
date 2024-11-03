@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "PMTypes/PMStructTypes.h"
 #include "PMAbilitySystemComponent.generated.h"
 
 /**
@@ -17,4 +18,7 @@ class PROJECTMEDIEVAL_API UPMAbilitySystemComponent : public UAbilitySystemCompo
 public:
 	void OnAbilityInputPressed(const FGameplayTag& InInputTag);
 	void OnAbilityInputReleased(const FGameplayTag& InInputTag);
+
+	UFUNCTION(BlueprintCallable, Category="Ability", meta=(ApplyLevel = "1"))
+	void GrantCharacterWeaponAbilities(const TArray<FPMAbilitySet>& InDefaultAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedSpecHandles);
 };

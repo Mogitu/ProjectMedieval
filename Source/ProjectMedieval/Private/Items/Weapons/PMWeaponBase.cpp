@@ -18,4 +18,3 @@ APMWeaponBase::APMWeaponBase()
 	WeaponCollisionBox->SetBoxExtent(FVector(20.f, 20.f, 20.f));;
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
-
