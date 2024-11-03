@@ -1,49 +1,38 @@
 // Project Medieval notice.
 
-
 #include "Components/Combat/PMCombatComponent.h"
+#include "Items/Weapons/PMWeaponBase.h"
 
-// Sets default values for this component's properties
-UPMCombatComponent::UPMCombatComponent()
+void UPMCombatComponent::RegisterWeapon(FGameplayTag InWeaponTagToRegister, APMWeaponBase* InWeaponToRegister, bool bRegisterAsEquipedWeapon)
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	checkf(!CarriedWeaponsMap.Contains(InWeaponTagToRegister), TEXT("A weapon named %s has already been added as a carried weapon"), *InWeaponTagToRegister.ToString());
+	check(InWeaponToRegister);
 
-	// ...
+	CarriedWeaponsMap.Emplace(InWeaponTagToRegister, InWeaponToRegister);
+	if (bRegisterAsEquipedWeapon)
+	{
+		CurrentEquippedWeaponTag = InWeaponTagToRegister;
+	}
+	//const FString WeaponString = FString::Printf(TEXT("A weapon name: %s has been registered using the tag %s"), *InWeaponToRegister->GetName(), *InWeaponTagToRegister.ToString());
 }
 
-
-// Called when the game starts
-void UPMCombatComponent::BeginPlay()
+APMWeaponBase* UPMCombatComponent::GetCarriedWeaponByTag(FGameplayTag InWeaponTagToGet) const
 {
-	Super::BeginPlay();
-
-	AbilitySystemComponent = GetOwner()->FindComponentByClass<UPMAbilitySystemComponent>();
-	// ...
-	
+	if (CarriedWeaponsMap.Contains(InWeaponTagToGet))
+	{
+		if (auto FoundWeapon = CarriedWeaponsMap.Find(InWeaponTagToGet))
+		{
+			return FoundWeapon->Get();
+		}
+	}
+	return nullptr;
 }
 
-
-// Called every frame
-void UPMCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+APMWeaponBase* UPMCombatComponent::GetCurrentEquipedWeapon() const
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	if (!CurrentEquippedWeaponTag.IsValid())
+	{
+		return nullptr;
+	}
+	return GetCarriedWeaponByTag(CurrentEquippedWeaponTag);
 }
-
-void UPMCombatComponent::InitiatePrimaryAttack()
-{
-	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(PrimaryAbility);
-	AbilitySystemComponent->GiveAbilityAndActivateOnce(AbilitySpec);
-	//TODO: This is going to call the primary attack based on which ability is the primary attack.
-}
-
-void UPMCombatComponent::InitiateSecondaryAttack()
-{
-	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SecondaryAbility);
-	AbilitySystemComponent->GiveAbilityAndActivateOnce(AbilitySpec);
-	//TODO: Same as first but with secondary.
-}
-

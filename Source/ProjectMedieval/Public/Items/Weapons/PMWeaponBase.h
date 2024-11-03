@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PMTypes/PMStructTypes.h"
 #include "PMWeaponBase.generated.h"
 
 class UBoxComponent;
@@ -14,8 +15,10 @@ class PROJECTMEDIEVAL_API APMWeaponBase : public AActor
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	APMWeaponBase();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WeaponData")
+	FPMWeaponData WeaponData;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Weapons")
@@ -25,5 +28,5 @@ protected:
 	TObjectPtr<UBoxComponent> WeaponCollisionBox;
 
 public:
-	FORCEINLINE UBoxComponent* GetWeaponCollisionBox() const { return WeaponCollisionBox; }
+	FORCEINLINE UBoxComponent* GetWeaponCollisionBox() const { return WeaponCollisionBox.Get(); }
 };

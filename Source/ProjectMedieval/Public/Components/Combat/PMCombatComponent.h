@@ -9,38 +9,26 @@
 #include "PMCombatComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class APMWeaponBase;
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PROJECTMEDIEVAL_API UPMCombatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UPMCombatComponent();
+public:
+	UFUNCTION(BlueprintCallable, Category="Combat")
+	void RegisterWeapon(FGameplayTag InWeaponTagToRegister, APMWeaponBase* InWeaponToRegister, bool bRegisterAsEquipedWeapon = false);
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintCallable, Category="Combat")
+	APMWeaponBase* GetCarriedWeaponByTag(FGameplayTag InWeaponTagToGet) const;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
-	//These 2 functions will initiate a primary or secondary attack. Going to be used in line with GAS system
-	void InitiatePrimaryAttack();
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	FGameplayTag CurrentEquippedWeaponTag;
 
-	void InitiateSecondaryAttack();
+	UFUNCTION(BlueprintCallable, Category="Combat")
+	APMWeaponBase* GetCurrentEquipedWeapon() const;
 
 private:
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UPMGameplayAbility> PrimaryAbility;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UPMGameplayAbility> SecondaryAbility;
-
-	TObjectPtr<UPMAbilitySystemComponent> AbilitySystemComponent;
-	//Make 2 ability vars here for primary and secondary attacks with uproperty editdefaults.
-	
-
-		
+	TMap<FGameplayTag, TObjectPtr<APMWeaponBase>> CarriedWeaponsMap;
 };

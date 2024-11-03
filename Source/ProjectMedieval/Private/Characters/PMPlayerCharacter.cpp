@@ -5,11 +5,16 @@
 #include "Components/Input/PMInputComponent.h"
 #include "PMGameplayTags.h"
 #include "AbilitySystem/PMAbilitySystemComponent.h"
+#include "Camera/CameraComponent.h"
 #include "DataAssets/Database/PMCharacterDataBase.h"
 #include "DataAssets/Input/PMDataAsset_InputConfig.h"
 
 APMPlayerCharacter::APMPlayerCharacter()
 {
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->bUsePawnControlRotation = true;
+	CameraComponent->SetupAttachment(GetRootComponent());
+	GetMesh()->SetupAttachment(CameraComponent);
 }
 
 void APMPlayerCharacter::PossessedBy(AController* NewController)
@@ -36,7 +41,7 @@ void APMPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 	UPMInputComponent* PMInputComponent = CastChecked<UPMInputComponent>(PlayerInputComponent);
 	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	PMInputComponent->BindNativeInputAction(InputConfigDataAsset, PMGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);	
 	PMInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 

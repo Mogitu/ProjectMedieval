@@ -34,6 +34,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="CharacterData", meta=(AllowPrivateAccess=true))
 	TObjectPtr<UPMDataAsset_InputConfig> InputConfigDataAsset;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera", meta=(AllowPrivateAccess=true))
+	TObjectPtr<UCameraComponent> CameraComponent;
+
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
 
